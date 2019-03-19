@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import config from "../config.json"
 const btnRightStyle = {
   float: 'right'
 };
@@ -40,7 +40,7 @@ export class CreateStudentModal extends Component {
     
     const {onCreateStudent} = this.props;
 
-    fetch('https://localhost:44312/api/student', {
+    fetch( `${config.baseUrl}/student`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

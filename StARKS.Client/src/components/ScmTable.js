@@ -4,8 +4,7 @@ import './ScmTable.css';
 import CreateStudentModal from './CreateStudentModal';
 import EditCourseModal from './EditCourseModal'
 import EditStudentModal from './EditStudentModal'
-import $ from 'jquery';
-import { debug } from 'util';
+
 import config from "../config.json"
 
 const tableStyleThTdThead = {
@@ -44,55 +43,6 @@ class ScmTable extends Component {
   componentDidMount() {
     this.getItems();
 
-    // $(document).ready(function () {
-    //   $('#studentFilter').on('keyup', function () {
-    //     var searchTerm = $(this).val().toLowerCase();
-    //     $('#tableX tbody tr').each(function () {
-    //       var lineStr = $(this).text().toLowerCase();
-    //       if (lineStr.indexOf(searchTerm) === -1) {
-
-    //         $(this).hide();
-
-    //       } else {
-    //         $(this).show();
-    //       }
-    //     });
-    //   });
-    // });
-
-    // $(document).ready(function () {
-    //   $('#courseFilter').on('keyup', function () {
-    //     var searchTerm = $(this).val().toLowerCase();
-    //     $('#tableX thead th').each(function () {
-    //       var lineStr = $(this).text().toLowerCase();
-    //       if (lineStr !== "   ") {
-    //         if (lineStr.indexOf(searchTerm) === -1) {
-    //           var $curr = $(this);
-    //           var $cell = $curr.closest('th,td')
-    //           var $table = $curr.closest('table')
-
-    //           var cellIndex = $cell[0].cellIndex + 1;
-
-    //           $table.find("tbody tr, thead tr")
-    //           .children(":nth-child(" + cellIndex + ")")
-    //           .hide()
-    //         } else {
-    //           var $curr1 = $(this);
-    //           var $cell1 = $curr1.closest('th,td')
-    //           var $table1 = $curr1.closest('table')
-
-    //           var cellIndex1 = $cell1[0].cellIndex + 1;
-
-    //           $table1.find("tbody tr, thead tr")
-    //           .children(":nth-child(" + cellIndex1 + ")")
-    //           .show()
-
-    //           $(this).show();
-    //         }
-    //       }
-    //     });
-    //   });
-    // });
   }
 
   handleChange(e, studentId, courseId) {
@@ -178,7 +128,7 @@ class ScmTable extends Component {
                      placeholder="Filter courses..."/>
             </div>
             <div style={btnRightStyle}>
-              <CreateCourseModal/>
+              <CreateCourseModal onCreateCourse={() => this.getItems()}/>
             </div>
             <div style={btnRightStyle}>
               <CreateStudentModal onCreateStudent={() => this.getItems()}/>
@@ -194,7 +144,7 @@ class ScmTable extends Component {
                 <th scope="col" style={tableStyleThTdThead}/>
                 {this.state.courses.filter(item => item.name.indexOf(this.state.courseSearch) !== -1).map((course, index) =>
                     <th scope="col" style={tableStyleThTdThead}>
-                      <EditCourseModal key={index} course={course}/>
+                      <EditCourseModal key={index} onEditCourse={() => this.getItems()} course={course}/>
                     </th>
                 )}
               </tr>
@@ -203,7 +153,7 @@ class ScmTable extends Component {
               {this.state.allScm.filter(item => item.sname.toLowerCase().indexOf(this.state.studentSearch.toLowerCase()) !== -1).map((studentCourseMark, i) =>
                   <tr key={i}>
                     <th scope="row" style={tableStyleThTdThead}>
-                      <EditStudentModal scm={studentCourseMark}/>
+                      <EditStudentModal scm={studentCourseMark}  onStudentEdit={() => this.getItems()}/>
                     </th>
                     {studentCourseMark.grades.filter(grade => grade.course.name.indexOf(this.state.courseSearch) !== -1).map((sc, indexgr) =>
                         <td style={tableStyleThTdThead} key={indexgr}>

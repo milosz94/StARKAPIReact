@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import config from "../config.json"
 const btnRightStyle = {
   float: 'right'
 };
@@ -38,7 +38,7 @@ export class EditStudentModal extends Component {
   }
 
   getStudent() {
-    fetch('https://localhost:44312/api/student' + "/" + this.state.id)
+    fetch( `${config.baseUrl}/student` + "/" + this.state.id)
     .then(response => response.json())
     .then(response => {
           this.setState({'id': response.id});
@@ -65,10 +65,8 @@ export class EditStudentModal extends Component {
 
   handleSubmit(e) {
 
-    const url = new URL(
-        "https://localhost:44312/api/student" + "/" + this.state.id);
-    // params = {id: this.props.course.id}
-    // Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
+    const url = new URL(`${config.baseUrl}/student` + "/" + this.state.id);
+    
 
     fetch(url, {
       method: 'PUT',
@@ -91,18 +89,18 @@ export class EditStudentModal extends Component {
 
   handleDelete(e) {
     //window.alert(this.state.id);
-    var url = new URL(
-        "https://localhost:44312/api/student" + "/" + this.state.id);
+    var url = new URL( `${config.baseUrl}/student` + "/" + this.state.id);
     // params = {id: this.state.id}
     // Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-
+    
+    const {onStudentEdit} = this.props;
     fetch(url, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    });
+    }).then(() => onStudentEdit());
     this.setState({show: false});
   };
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import config from "../config.json"
 const btnRightStyle = {
   float: 'right'
 }
@@ -36,8 +36,7 @@ export class EditCourseModal extends Component {
 
   handleSubmit(e) {
 
-    var url = new URL(
-        "https://localhost:44312/api/course" + "/" + this.state.id);
+    var url = new URL( `${config.baseUrl}/course` + "/" + this.state.id);
 
     fetch(url, {
       method: 'PUT',
@@ -56,18 +55,17 @@ export class EditCourseModal extends Component {
   }
 
   handleDelete(e) {
-    const url = new URL(
-        "https://localhost:44312/api/course" + "/" + this.state.id);
+    const url = new URL( `${config.baseUrl}/course` + "/" + this.state.id);
     // params = {id: this.state.id}
     // Object.keys(params).forEach(key => url.searchParams.append(key, params[key]))
-
+    const {onEditCourse} = this.props;
     fetch(url, {
       method: 'DELETE',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       }
-    });
+    }).then(() => onEditCourse());
     this.setState({show: false});
 
   }

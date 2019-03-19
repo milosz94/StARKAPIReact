@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-
+import config from "../config.json"
 const btnRightStyle = {
   float: 'right'
 };
@@ -37,7 +37,9 @@ export class CreateCourseModal extends Component {
       jsonObject[key] = value;
     }
 
-    fetch('https://localhost:44312/api/course', {
+    const {onCreateCourse} = this.props;
+
+    fetch(`${config.baseUrl}/course`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -48,7 +50,7 @@ export class CreateCourseModal extends Component {
         name: jsonObject.name,
         description: jsonObject.description
       })
-    });
+    }).then(() => onCreateCourse());
     this.setState({show: false});
   }
 
